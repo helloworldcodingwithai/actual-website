@@ -69,42 +69,46 @@
     </div>
     
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
-            authDomain: "gis-tricycle-club.firebaseapp.com",
-            databaseURL: "https://gis-tricycle-club-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "gis-tricycle-club",
-            storageBucket: "gis-tricycle-club.firebasestorage.app",
-            messagingSenderId: "457659007996",
-            appId: "1:457659007996:web:b64c986416e0041151e879",
-            measurementId: "G-7822CL09MQ"
-        };
-        
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        function addPost() {
-            let postText = document.getElementById("newPost").value;
-            if (postText.trim() === "") return;
+        document.addEventListener("DOMContentLoaded", function() {
+            // Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
+                authDomain: "gis-tricycle-club.firebaseapp.com",
+                databaseURL: "https://gis-tricycle-club-default-rtdb.asia-southeast1.firebasedatabase.app",
+                projectId: "gis-tricycle-club",
+                storageBucket: "gis-tricycle-club.firebasestorage.app",
+                messagingSenderId: "457659007996",
+                appId: "1:457659007996:web:b64c986416e0041151e879",
+                measurementId: "G-7822CL09MQ"
+            };
             
-            // Push post to Firebase
-            db.ref("posts").push({ text: postText });
-            document.getElementById("newPost").value = "";
-        }
+            // Initialize Firebase
+            const app = firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
 
-        function loadPosts() {
-            const postsDiv = document.getElementById("posts");
-            db.ref("posts").on("child_added", (snapshot) => {
-                let postDiv = document.createElement("div");
-                postDiv.className = "post";
-                postDiv.textContent = snapshot.val().text;
-                postsDiv.prepend(postDiv);
-            });
-        }
-        
-        window.onload = loadPosts;
+            function addPost() {
+                let postText = document.getElementById("newPost").value;
+                if (postText.trim() === "") return;
+                
+                // Push post to Firebase
+                db.ref("posts").push({ text: postText });
+                document.getElementById("newPost").value = "";
+            }
+
+            function loadPosts() {
+                const postsDiv = document.getElementById("posts");
+                db.ref("posts").on("child_added", (snapshot) => {
+                    let postDiv = document.createElement("div");
+                    postDiv.className = "post";
+                    postDiv.textContent = snapshot.val().text;
+                    postsDiv.prepend(postDiv);
+                });
+            }
+
+            window.addPost = addPost;  // Make function accessible to button
+            loadPosts();
+        });
     </script>
 </body>
 </html>
+
