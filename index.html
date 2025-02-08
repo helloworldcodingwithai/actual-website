@@ -1,5 +1,5 @@
 <script>
-    // Load Firebase scripts
+    // Firebase scripts
     document.write('<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"><\/script>');
     document.write('<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"><\/script>');
 
@@ -21,7 +21,7 @@
         const db = firebase.database();
 
         // Function to add a post
-        window.addPost = function () {
+        function addPost() {
             let postText = document.getElementById("newPost").value;
             if (postText.trim() === "") return;
 
@@ -30,7 +30,7 @@
 
             // Clear input box
             document.getElementById("newPost").value = "";
-        };
+        }
 
         // Load posts from Firebase
         function loadPosts() {
@@ -43,7 +43,10 @@
             });
         }
 
+        // Attach function to window so the button works
+        window.addPost = addPost;
+
+        // Load posts on page load
         loadPosts();
     });
 </script>
-
