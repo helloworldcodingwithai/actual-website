@@ -1,54 +1,50 @@
+<!-- Load Firebase properly -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Firebase scripts
-        const script1 = document.createElement("script");
-        script1.src = "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        document.head.appendChild(script1);
-
-        const script2 = document.createElement("script");
-        script2.src = "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-        document.head.appendChild(script2);
-
-        script2.onload = function () {
-            // Firebase configuration
-            const firebaseConfig = {
-                apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
-                authDomain: "gis-tricycle-club.firebaseapp.com",
-                databaseURL: "https://gis-tricycle-club-default-rtdb.asia-southeast1.firebasedatabase.app",
-                projectId: "gis-tricycle-club",
-                storageBucket: "gis-tricycle-club.firebasestorage.app",
-                messagingSenderId: "457659007996",
-                appId: "1:457659007996:web:b64c986416e0041151e879",
-                measurementId: "G-7822CL09MQ"
-            };
-
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.database();
-
-            function addPost() {
-                let postText = document.getElementById("newPost").value;
-                if (postText.trim() === "") return;
-
-                // Push post to Firebase
-                db.ref("posts").push({ text: postText });
-
-                // Clear input box
-                document.getElementById("newPost").value = "";
-            }
-
-            function loadPosts() {
-                const postsDiv = document.getElementById("posts");
-                db.ref("posts").on("child_added", (snapshot) => {
-                    let postDiv = document.createElement("div");
-                    postDiv.className = "post";
-                    postDiv.textContent = snapshot.val().text;
-                    postsDiv.prepend(postDiv);
-                });
-            }
-
-            window.addPost = addPost;  // Ensure addPost is available for button
-            loadPosts();  // Load posts after Firebase is ready
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
+            authDomain: "gis-tricycle-club.firebaseapp.com",
+            databaseURL: "https://gis-tricycle-club-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "gis-tricycle-club",
+            storageBucket: "gis-tricycle-club.firebasestorage.app",
+            messagingSenderId: "457659007996",
+            appId: "1:457659007996:web:b64c986416e0041151e879",
+            measurementId: "G-7822CL09MQ"
         };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Function to add a post
+        function addPost() {
+            let postText = document.getElementById("newPost").value;
+            if (postText.trim() === "") return;
+
+            // Push post to Firebase
+            db.ref("posts").push({ text: postText });
+
+            // Clear input box
+            document.getElementById("newPost").value = "";
+        }
+
+        // Function to load posts from Firebase
+        function loadPosts() {
+            const postsDiv = document.getElementById("posts");
+            db.ref("posts").on("child_added", (snapshot) => {
+                let postDiv = document.createElement("div");
+                postDiv.className = "post";
+                postDiv.textContent = snapshot.val().text;
+                postsDiv.prepend(postDiv);
+            });
+        }
+
+        window.addPost = addPost; // Make the function available globally
+        loadPosts(); // Load posts when page loads
     });
 </script>
+
