@@ -1,114 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GIS Tricycle Club</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-    <style>
-        body {
-            background-color: black;
-            color: green;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 2.5em;
-        }
-        .blog {
-            margin-top: 20px;
-            border-top: 2px solid green;
-            padding-top: 20px;
-        }
-        textarea {
-            display: block;
-            margin: 10px auto;
-            width: 80%;
-            max-width: 600px;
-            background-color: #222;
-            color: green;
-            border: 1px solid green;
-            padding: 10px;
-        }
-        .post {
-            border-bottom: 1px solid green;
-            padding: 10px 0;
-        }
-        #posts {
-            margin-top: 20px;
-            text-align: left;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .plus-button {
-            background-color: green;
-            color: black;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
-            cursor: pointer;
-            display: block;
-            margin: 10px auto;
-        }
-    </style>
-</head>
-<body>
-    <h1>GIS Tricycle Club</h1>
-    <p>Hello members, hope you have a good time here!</p>
-    
-    <div class="blog">
-        <h2>Blog</h2>
-        <textarea id="newPost" placeholder="Write something..."></textarea>
-        <button class="plus-button" onclick="addPost()">+</button>
-        <div id="posts"></div>
-    </div>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Firebase configuration
-            const firebaseConfig = {
-                apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
-                authDomain: "gis-tricycle-club.firebaseapp.com",
-                databaseURL: "https://gis-tricycle-club-default-rtdb.asia-southeast1.firebasedatabase.app",
-                projectId: "gis-tricycle-club",
-                storageBucket: "gis-tricycle-club.firebasestorage.app",
-                messagingSenderId: "457659007996",
-                appId: "1:457659007996:web:b64c986416e0041151e879",
-                measurementId: "G-7822CL09MQ"
-            };
-            
-            // Initialize Firebase
-            const app = firebase.initializeApp(firebaseConfig);
-            const db = firebase.database();
+<script>
+    // Load Firebase scripts
+    document.write('<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"><\/script>');
+    document.write('<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"><\/script>');
 
-            function addPost() {
-                let postText = document.getElementById("newPost").value;
-                if (postText.trim() === "") return;
-                
-                // Push post to Firebase
-                db.ref("posts").push({ text: postText });
-                document.getElementById("newPost").value = "";
-            }
+    document.addEventListener("DOMContentLoaded", function () {
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
+            authDomain: "gis-tricycle-club.firebaseapp.com",
+            databaseURL: "https://gis-tricycle-club-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "gis-tricycle-club",
+            storageBucket: "gis-tricycle-club.firebasestorage.app",
+            messagingSenderId: "457659007996",
+            appId: "1:457659007996:web:b64c986416e0041151e879",
+            measurementId: "G-7822CL09MQ"
+        };
 
-            function loadPosts() {
-                const postsDiv = document.getElementById("posts");
-                db.ref("posts").on("child_added", (snapshot) => {
-                    let postDiv = document.createElement("div");
-                    postDiv.className = "post";
-                    postDiv.textContent = snapshot.val().text;
-                    postsDiv.prepend(postDiv);
-                });
-            }
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-            window.addPost = addPost;  // Make function accessible to button
-            loadPosts();
-        });
-    </script>
-</body>
-</html>
+        // Function to add a post
+        window.addPost = function () {
+            let postText = document.getElementById("newPost").value;
+            if (postText.trim() === "") return;
+
+            // Push post to Firebase
+            db.ref("posts").push({ text: postText });
+
+            // Clear input box
+            document.getElementById("newPost").value = "";
+        };
+
+        // Load posts from Firebase
+        function loadPosts() {
+            const postsDiv = document.getElementById("posts");
+            db.ref("posts").on("child_added", (snapshot) => {
+                let postDiv = document.createElement("div");
+                postDiv.className = "post";
+                postDiv.textContent = snapshot.val().text;
+                postsDiv.prepend(postDiv);
+            });
+        }
+
+        loadPosts();
+    });
+</script>
 
