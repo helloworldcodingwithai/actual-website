@@ -28,9 +28,26 @@
             margin-top: 10px;
             padding: 10px;
         }
+        .nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav button {
+            background-color: green;
+            color: black;
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <div class="nav">
+        <a href="index.html"><button>Home</button></a>
+        <a href="blog.html"><button>Blog</button></a>
+    </div>
+    
     <div class="container">
         <h2>Write a Post</h2>
         <input type="text" id="postTitle" placeholder="Write Title">
@@ -61,7 +78,7 @@
                 if (postTitle.trim() === "" || postText.trim() === "") return;
                 
                 db.ref("posts").push({ title: postTitle, text: postText });
-                window.location.href = "index.html";
+                window.location.href = "blog.html";
             });
         });
     </script>
