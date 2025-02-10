@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Post</title>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
         body {
             background-color: black;
@@ -59,6 +58,7 @@
     
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Firebase Configuration
             const firebaseConfig = {
                 apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
                 authDomain: "gis-tricycle-club.firebaseapp.com",
@@ -69,17 +69,27 @@
                 appId: "1:457659007996:web:b64c986416e0041151e879",
                 measurementId: "G-7822CL09MQ"
             };
-            
+
+            // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             const db = firebase.database();
 
+            // Ensure button works
             document.getElementById("submitPost").addEventListener("click", function() {
-                let postTitle = document.getElementById("postTitle").value;
-                let postText = document.getElementById("newPost").value;
-                if (postTitle.trim() === "" || postText.trim() === "") return;
-                
-                db.ref("posts").push({ title: postTitle, text: postText });
-                window.location.href = "blog.html";
+                let postTitle = document.getElementById("postTitle").value.trim();
+                let postText = document.getElementById("newPost").value.trim();
+
+                if (postTitle === "" || postText === "") {
+                    alert("Please enter both title and content!");
+                    return;
+                }
+
+                db.ref("posts").push({ title: postTitle, text: postText }).then(() => {
+                    window.location.href = "blog.html"; // Redirect after posting
+                }).catch(error => {
+                    console.error("Error adding post:", error);
+                    alert("Failed to add post. Please try again.");
+                });
             });
         });
     </script>
