@@ -3,77 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GIS Tricycle Club</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <title>Home</title>
     <style>
         body {
             background-color: black;
             color: green;
-            font-family: Arial, sans-serif;
             text-align: center;
-            padding: 20px;
+            font-family: Arial, sans-serif;
         }
-        h1 {
-            font-size: 2.5em;
-        }
-        .blog {
-            margin-top: 20px;
-            border-top: 2px solid green;
-            padding-top: 20px;
-        }
-        .post {
-            border-bottom: 1px solid green;
-            padding: 10px 0;
-        }
-        #posts {
-            margin-top: 20px;
-            text-align: left;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        .nav button {
+            background-color: green;
+            color: black;
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <h1>GIS Tricycle Club</h1>
-    <p>Hello members, hope you have a good time here!</p>
-    
-    <div class="blog">
-        <h2>Blog</h2>
+    <h1>Welcome to GIS Tricycle Club</h1>
+    <div class="nav">
+        <a href="blog.html"><button>Blog</button></a>
         <a href="addpost.html"><button>Add Post</button></a>
-        <div id="posts"></div>
     </div>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const firebaseConfig = {
-                apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
-                authDomain: "gis-tricycle-club.firebaseapp.com",
-                databaseURL: "https://gis-tricycle-club-default-rtdb.asia-southeast1.firebasedatabase.app",
-                projectId: "gis-tricycle-club",
-                storageBucket: "gis-tricycle-club.firebasestorage.app",
-                messagingSenderId: "457659007996",
-                appId: "1:457659007996:web:b64c986416e0041151e879",
-                measurementId: "G-7822CL09MQ"
-            };
-            
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.database();
-
-            function loadPosts() {
-                const postsDiv = document.getElementById("posts");
-                db.ref("posts").on("child_added", (snapshot) => {
-                    let postDiv = document.createElement("div");
-                    postDiv.className = "post";
-                    let postData = snapshot.val();
-                    postDiv.innerHTML = `<strong>${postData.title}</strong><br>${postData.text}`;
-                    postsDiv.prepend(postDiv);
-                });
-            }
-            
-            loadPosts();
-        });
-    </script>
 </body>
 </html>
+
