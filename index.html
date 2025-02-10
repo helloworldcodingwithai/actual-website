@@ -33,28 +33,6 @@
             margin-left: auto;
             margin-right: auto;
         }
-        .popup {
-            display: none;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            color: black;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px green;
-            width: 300px;
-        }
-        .popup input, .popup textarea {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 5px;
-        }
-        .popup button {
-            margin-top: 10px;
-            padding: 5px 10px;
-        }
     </style>
 </head>
 <body>
@@ -63,22 +41,14 @@
     
     <div class="blog">
         <h2>Blog</h2>
-        <button id="addPostButton">Add Post</button>
+        <a href="addpost.html"><button>Add Post</button></a>
         <div id="posts"></div>
-    </div>
-    
-    <div id="postPopup" class="popup">
-        <h3>Write a Post</h3>
-        <input type="text" id="postTitle" placeholder="Write Title">
-        <textarea id="newPost" placeholder="Write Content"></textarea>
-        <button id="submitPost">Submit</button>
-        <button id="cancelPost">Cancel</button>
     </div>
     
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const firebaseConfig = {
-                apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZPjtV88lIo",
+                apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
                 authDomain: "gis-tricycle-club.firebaseapp.com",
                 databaseURL: "https://gis-tricycle-club-default-rtdb.asia-southeast1.firebasedatabase.app",
                 projectId: "gis-tricycle-club",
@@ -91,16 +61,6 @@
             firebase.initializeApp(firebaseConfig);
             const db = firebase.database();
 
-            function addPost() {
-                let postTitle = document.getElementById("postTitle").value;
-                let postText = document.getElementById("newPost").value;
-                if (postTitle.trim() === "" || postText.trim() === "") return;
-                db.ref("posts").push({ title: postTitle, text: postText });
-                document.getElementById("postTitle").value = "";
-                document.getElementById("newPost").value = "";
-                hidePopup();
-            }
-
             function loadPosts() {
                 const postsDiv = document.getElementById("posts");
                 db.ref("posts").on("child_added", (snapshot) => {
@@ -111,18 +71,6 @@
                     postsDiv.prepend(postDiv);
                 });
             }
-
-            function showPopup() {
-                document.getElementById("postPopup").style.display = "block";
-            }
-
-            function hidePopup() {
-                document.getElementById("postPopup").style.display = "none";
-            }
-
-            document.getElementById("addPostButton").addEventListener("click", showPopup);
-            document.getElementById("submitPost").addEventListener("click", addPost);
-            document.getElementById("cancelPost").addEventListener("click", hidePopup);
             
             loadPosts();
         });
