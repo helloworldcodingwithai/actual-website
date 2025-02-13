@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Add Post</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
     <style>
         body {
             background-color: black;
@@ -13,13 +15,18 @@
             padding: 20px;
         }
         .container {
-            max-width: 600px;
+            max-width: 500px;
             margin: auto;
             padding: 20px;
             background-color: white;
             color: black;
             border-radius: 10px;
             box-shadow: 0px 0px 10px green;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
         }
         .nav {
             text-align: center;
@@ -37,14 +44,51 @@
 </head>
 <body>
     <div class="nav">
-        <a href="blog.html"><button>Blog</button></a>
-        <a href="addpost.html"><button>Add Post</button></a>
+        <a href="index.html"><button>Home</button></a>
+        <a href="blog.html"><button id="blogButton">Blog</button></a>
     </div>
-
+    
     <div class="container">
-        <h2>Welcome to GIS Tricycle Club</h2>
-        <p>This is the home page.</p>
+        <h2>Write a Post</h2>
+        <input type="text" id="postTitle" placeholder="Write Title">
+        <textarea id="newPost" placeholder="Write Content"></textarea>
+        <button id="submitPost">Submit</button>
+        <a href="index.html"><button>Cancel</button></a>
     </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const firebaseConfig = {
+                apiKey: "AIzaSyCYjD1IYCzk6U_8M1XjwyzZxZPjtV88lIo",
+                authDomain: "gis-tricycle-club.firebaseapp.com",
+                databaseURL: "https://gis-tricycle-club-default-rtdb.asia-southeast1.firebasedatabase.app",
+                projectId: "gis-tricycle-club",
+                storageBucket: "gis-tricycle-club.firebasestorage.app",
+                messagingSenderId: "457659007996",
+                appId: "1:457659007996:web:b64c986416e0041151e879",
+                measurementId: "G-7822CL09MQ"
+            };
+            
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
+
+            document.getElementById("submitPost").addEventListener("click", function() {
+                let postTitle = document.getElementById("postTitle").value;
+                let postText = document.getElementById("newPost").value;
+                if (postTitle.trim() === "" || postText.trim() === "") return;
+                
+                db.ref("posts").push({ title: postTitle, text: postText });
+                window.location.href = "blog.html";
+            });
+
+            document.getElementById("blogButton").addEventListener("click", function(event) {
+                event.preventDefault();
+                window.location.href = "blog.html";
+            });
+        });
+    </script>
 </body>
+</html>
+
 </html>
 
