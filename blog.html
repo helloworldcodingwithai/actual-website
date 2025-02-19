@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Post</title>
+    <title>Blog</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
     <style>
@@ -23,10 +23,12 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px green;
         }
-        input, textarea, button {
-            width: 100%;
-            margin-top: 10px;
+        .post {
+            background-color: lightgray;
             padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: left;
         }
         .nav {
             text-align: center;
@@ -45,15 +47,12 @@
 <body>
     <div class="nav">
         <a href="index.html"><button>Home</button></a>
-        <a href="blog.html"><button>Blog</button></a>
+        <a href="addpost.html"><button>Add Post</button></a>
     </div>
     
     <div class="container">
-        <h2>Write a Post</h2>
-        <input type="text" id="postTitle" placeholder="Write Title">
-        <textarea id="newPost" placeholder="Write Content"></textarea>
-        <button id="submitPost">Submit</button>
-        <a href="index.html"><button>Cancel</button></a>
+        <h2>Blog</h2>
+        <div id="posts"></div>
     </div>
     
     <script>
@@ -71,14 +70,14 @@
             
             firebase.initializeApp(firebaseConfig);
             const db = firebase.database();
+            const postsDiv = document.getElementById("posts");
 
-            document.getElementById("submitPost").addEventListener("click", function() {
-                let postTitle = document.getElementById("postTitle").value;
-                let postText = document.getElementById("newPost").value;
-                if (postTitle.trim() === "" || postText.trim() === "") return;
-                
-                db.ref("posts").push({ title: postTitle, text: postText });
-                window.location.href = "blog.html";
+            db.ref("posts").on("child_added", function(snapshot) {
+                let post = snapshot.val();
+                let postDiv = document.createElement("div");
+                postDiv.className = "post";
+                postDiv.innerHTML = `<h3>${post.title}</h3><p>${post.text}</p>`;
+                postsDiv.prepend(postDiv);
             });
         });
     </script>
